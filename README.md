@@ -8,7 +8,7 @@ The highest performing AS6212 has an accuracy of +/- 0.2°C from -10°C to 65 °
 
 Documentation
 --------------
-* **[Product Repository](https://github.com/will2055/AS6212-Temperature-Sensor-Breakout)** - Main repository (including hardware files) for the temperature sensor.
+* **[Main Repository](https://github.com/will2055/AS6212-Temperature-Sensor-Breakout)** - Main repository (including hardware files) for the temperature sensor.
 * **[Arduino Library]()** - Repository containing the Arduino library software to interface with this sensor.
 
 License Information
