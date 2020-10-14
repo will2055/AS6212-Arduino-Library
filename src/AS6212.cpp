@@ -2,7 +2,7 @@
   Brandon Williams
   AS6212 Library Source File
   Creation Date: 07/16/20
-  https://github.com/will2055/AS6212-Temperature-Sensor-Breakout/tree/master/Software
+  https://github.com/will2055/AS6212-Arduino-Library/src
   
   This file defines AS6212 core functions.
   
@@ -176,10 +176,6 @@ bool AS6212::setTHigh(int16_t highLimit){
   }
 }
 
-//Next Area of testing
-
-//Sleep Single-Shot mode (0xC1A0) returns odd register value (FFFFC1A0)
-
 uint16_t AS6212::readConfig(){
 	
 		return readRegister(CONFIG);
@@ -191,3 +187,5 @@ void AS6212::setConfig(uint16_t targetState){
 		writeRegister(CONFIG, targetState);
 		
 }
+
+//Sleep Single-Shot mode (0xC1A0) returns odd register value (FFFFC1A0)

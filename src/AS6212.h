@@ -2,7 +2,7 @@
   Brandon Williams
   AS6212 Library Header File
   Creation Date: 07/16/20
-  https://github.com/will2055/AS6212-Temperature-Sensor-Breakout/tree/master/Software
+  https://github.com/will2055/AS6212-Arduino-Library/src
   
   This file defines AS6212 core function definitions and
   initializers.
