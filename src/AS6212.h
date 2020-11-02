@@ -23,7 +23,7 @@
 
 #include <Wire.h>
 #include <Arduino.h>
-#include "AS6212_Registers.h"
+#include "registers/AS6212_Registers.h"
 
 class AS6212{
   public:
