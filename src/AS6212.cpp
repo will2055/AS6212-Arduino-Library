@@ -26,7 +26,7 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include "AS6212_Registers.h"
+#include "registers/AS6212_Registers.h"
 #include "AS6212.h"
 
 /* CONSTRUCTOR
