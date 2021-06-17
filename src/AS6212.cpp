@@ -64,21 +64,23 @@ uint8_t AS6212::getAddress(){
   
 }
 
-uint16_t AS6212::readRegister(uint8_t reg){
+uint16_t AS6212::readRegister(uint8_t reg, uint8_t size){
 
   _i2cPort->beginTransmission(_deviceAddress);
   _i2cPort->write(reg);
   _i2cPort->endTransmission();
-  _i2cPort->requestFrom(_deviceAddress, (uint8_t)2);
-
-  uint8_t data[2] = {0};
+  
+  _i2cPort->requestFrom(_deviceAddress, size);
+  
+  uint8_t dataBuffer[size];
+  
   int16_t datac = 0;
 
   if(_i2cPort->available() <= 2){
-    data[0] = _i2cPort->read();
-    data[1] = _i2cPort->read();
-    datac = ((data[0] << 8) | data[1]);
+    for(size_t i = 0; i < size; i++) dataBuffer[i] = _i2cPort->read();
   }
+  
+  datac = ((dataBuffer[0] << 8) | dataBuffer[1]);
 
   return datac;
 }
@@ -95,7 +97,7 @@ void AS6212::writeRegister(uint8_t reg, int16_t data){
 
 float AS6212::readTempC(){
 
-  int16_t digitalTempC = readRegister(TVAL);
+  int16_t digitalTempC = readRegister(TVAL,2);
 
   float finalTempC;
 
@@ -117,7 +119,7 @@ float AS6212::readTempF(){
 }
 
 float AS6212::getTLow(){
-	int16_t lowTemp = readRegister(TLOW);
+	int16_t lowTemp = readRegister(TLOW,2);
 	
 	float temp;
 
@@ -132,22 +134,34 @@ float AS6212::getTLow(){
 	return temp;
 }
 
-bool AS6212::setTLow(int16_t lowLimit){        
+/*
+ * Sets TLow Threshold, if temp drops below the threshold then 
+ * interrupt is triggered. Pointer to error flag to for custom
+ * error reporting.
+ */
+bool AS6212::setTLow(int16_t lowLimit, uint8_t *tlow_err_flag){        
 
-  if(lowLimit < getTHigh()){
+  if(lowLimit < getTHigh() && lowLimit != getTLow()){
     int16_t lowTemp = lowLimit / 0.0078125;
     writeRegister(TLOW, lowTemp);
     return true;
   }
   
+  else if(lowLimit < getTHigh() && lowLimit == getTLow()){
+	  //Serial.println("Value is the same as what is already set.");
+	  *tlow_err_flag = 1;
+	  return false;
+  }
+  
   else{
-	  Serial.println("Value is above the High Temperature Threshold.\n Please choose a different value.");
-	 return false;
+	  //Serial.println("Value is above the High Temperature Threshold.\n Please choose a different value.");
+	  *tlow_err_flag = 2;
+	  return false;
   }
 }
 
 float AS6212::getTHigh(){
-	int16_t highTemp = readRegister(THIGH);
+	int16_t highTemp = readRegister(THIGH,2);
 	
 	float temp;
 
@@ -171,14 +185,14 @@ bool AS6212::setTHigh(int16_t highLimit){
   }
   
   else{
-	  Serial.println("Value is below the Low Temperature Threshold.\n Please choose a different value.");
-	 return false;
+	  //Serial.println("Value is below the Low Temperature Threshold.\n Please choose a different value.");
+	  return false;
   }
 }
 
 uint16_t AS6212::readConfig(){
 	
-		return readRegister(CONFIG);
+		return readRegister(CONFIG,2);
 	
 }
 

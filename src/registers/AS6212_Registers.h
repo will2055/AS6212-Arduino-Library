@@ -34,6 +34,16 @@ enum AS6212_Register{
   SLEEPMODE =       0x41A0,   //Sleep Mode
   SLEEPSS   =       0xC1A0,   //Sleep Mode Single Shot
 
+  /* Register values (MSB -> LSB) */
+  SINGLESHOT	=	0x8000,	//15
+  CFAULT_1		=	0x0800,	//12
+  CFAULT_0		=	0x0400,	//11
+  POLARITY		=	0x0200,	//10
+  INTERRUPT		=	0x0100,	//9
+  SLEEP			=	0x0080,	//8
+  CONVER_RATE_1 =	0x0040,	//7
+  CONVER_RATE_0 =	0x0020,	//6
+  ALERT			=	0x0010,	//5
 };
 
 #endif

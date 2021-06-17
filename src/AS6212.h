@@ -25,6 +25,11 @@
 #include <Arduino.h>
 #include "registers/AS6212_Registers.h"
 
+struct{
+	uint8_t tlow_err_flag;
+	uint8_t thigh_err_flag;
+}ERROR_FLAGS;
+
 class AS6212{
   public:
     AS6212();
@@ -33,7 +38,7 @@ class AS6212{
     float readTempC();
     float readTempF();
     float getTLow();
-    bool setTLow(int16_t lowLimit);
+    bool setTLow(int16_t lowLimit, uint8_t *tlow_err_flag);
     float getTHigh();
     bool setTHigh(int16_t highLimit);
     uint16_t readConfig();
@@ -41,7 +46,7 @@ class AS6212{
   private:
     TwoWire *_i2cPort = NULL;
     uint8_t _deviceAddress;
-    uint16_t readRegister(uint8_t reg);
+    uint16_t readRegister(uint8_t reg, uint8_t size);
     void writeRegister(uint8_t reg, int16_t data);
 };
 
